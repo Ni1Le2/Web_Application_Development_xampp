@@ -1,0 +1,11 @@
+- test all functionalities
+- clean up code
+- add comments
+- remove unescessary files 
+- folder structure?
+- make css style for:
+    - displayed paper
+    - comments and ratings
+    - text areas?
+- add option for cc to add news on homepage
+(- add option for cc to suggest changes for paper)

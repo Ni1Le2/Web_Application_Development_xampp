@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+   <title>GFG- Store Data</title>
+</head>
+
+<body>
+   <h1>Storing Form data in Database</h1>
+   <form action="php/insert.php" method="post">
+
+      <p>
+         <label for="title">Title:</label>
+         <select name="title" id="titleselect">
+            <option value="" selected="selected">None</option>
+            <option value="Ms.">Ms.</option>
+            <option value="Mrs.">Mrs.</option>
+            <option value="Mr.">Mr.</option>
+            <option value="Dr.">Dr.</option>
+            <option value="Prof.">Prof.</option>
+            <option value="Doc.">Doc.</option>
+        </select>      
+      </p>
+      <p>
+         <label for="firstName">First Name:</label>
+         <input type="text" name="firstName" id="firstName" required>
+      </p>
+      <p>
+         <label for="surname">Surname:</label>
+         <input type="text" name="surname" id="surname" required>
+      </p>
+      <p>
+         <label for="email">Email:</label>
+         <input type="text" name="email" id="email" required>
+      </p>
+      <p>
+         <label for="password">Password:</label>
+         <input type="text" name="password" id="password" required>
+      </p>
+      <p>
+         <label for="affiliateOrganisation">Affiliate Organisation:</label>
+         <input type="text" name="affiliateOrganisation" id="affiliateOrganisation">
+      </p>
+
+      <input type="submit" value="Submit">
+   </form>
+</body>
+
+</html>
