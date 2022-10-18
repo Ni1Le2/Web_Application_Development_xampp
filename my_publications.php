@@ -92,7 +92,7 @@ $email = $_SESSION['email'];
 
     <!-- Publications Start -->
     <div id="publ" class="container-fluid">
-        <h1 class="heading-style text-white">My Publications TEST</h1>
+        <h1 class="heading-style text-white">My Publications</h1>
         <?php
         // select all the papers from the user
         $sql = "SELECT * FROM papers WHERE email='$email'";
