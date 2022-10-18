@@ -57,9 +57,10 @@
         <label for="email"><b>Email:</b></label><br>
         <input type="text" placeholder="Enter your email..." name="email" id="email" required><br>
         <label for="password"><b>Password:</b></label><br>
-        <input type="password" placeholder="Enter your password..." id="password" name="password" required><br>
-        <button type="submit" class="btn" name="login_user">Sign in</button>
-        <a href="registration.php" class="container text-dark">Not registered yet? - Register here! </a>
+        <input type="password" placeholder="Enter your password..." id="password" name="password" required>
+        <br>
+        <a href="registration.php" class="container link">Not registered yet? - Register here! </a> <br>
+        <button type="submit" class="btn" name="login_user">Sign in</button> <br>
     </form>
 
     <!-- Sign in Window End -->

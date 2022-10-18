@@ -1,10 +1,10 @@
-<?php session_start(); ?>
+<?php include('php/server.php') ?>
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="utf-8">
-    <title>WEBUILD -  Construction Company Website Template Free</title>
+    <title>WEBUILD - Construction Company Website Template Free</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="Free HTML Templates" name="keywords">
     <meta content="Free HTML Templates" name="description">
@@ -14,7 +14,7 @@
 
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Roboto:wght@500;700&display=swap" rel="stylesheet"> 
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Roboto:wght@500;700&display=swap" rel="stylesheet">
 
     <!-- Icon Font Stylesheet -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.0/css/all.min.css" rel="stylesheet">
@@ -31,16 +31,13 @@
     <!-- Template Stylesheet -->
     <link href="css/style.css" rel="stylesheet">
 
-    <!-- Jquery for navigation bar -->
-    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
-
 </head>
 
 <body>
     <!-- Banner Start -->
     <div class="container-fluid p-0">
         <div class="row">
-            <img src="img/icath_banner.webp" alt="ITAC_banner"/>
+            <img src="img/icath_banner.webp" alt="ITAC_banner" />
         </div>
     </div>
     <!-- Banner End -->
@@ -63,22 +60,46 @@
     ?>
     <!-- Navbar End -->
 
+
     <!-- Page Header Start -->
-    <div class="container-fluid page-header">
-        <h1 class="display-3 text-uppercase text-white mb-3">About</h1>
+    <div class="container-fluid page-header ">
+        <h1 class="display-3 text-uppercase text-white mb-3">Upload</h1>
         <div class="d-inline-flex text-white">
             <h6 class="text-uppercase m-0"><a href="index.php">Home</a></h6>
             <h6 class="text-white m-0 px-3">/</h6>
-            <h6 class="text-uppercase text-white m-0">About</h6>
+            <h6 class="text-uppercase text-white m-0">Papers & Posters</h6>
         </div>
     </div>
-    <!-- Page Header Start -->
+    <!-- Page Header End -->
 
+    <!-- Review Section Start -->
+    <h1 class="heading-style text-white">Review:</h1>
+    <?php
+    if (isset($_GET['title'])) {
+        $title = $_GET['title'];
+        
+        echo '<form method="post" action="review.php?title='.$title.'">';
+        include('php/errors.php');
+        echo '<p>Rate the paper on a scale from 1 (very bad) to 5 (very good):</p>
+                    <p>
+                        <input type="radio" id="rating" name="rating" value="1">
+                        <label>1 (very bad)</label>
+                        <input type="radio" id="rating" name="rating" value="2">
+                        <label>2 (bad)</label>
+                        <input type="radio" id="rating" name="rating" value="3" checked="checked">
+                        <label>3 (ok)</label>
+                        <input type="radio" id="rating" name="rating" value="4">
+                        <label>4 (good)</label>
+                        <input type="radio" id="rating" name="rating" value="5">
+                        <label>5 (very good)</label></p>';
 
-    <!-- About Start -->
-    
-    <!-- About End -->    
-    
+        echo '<textarea name="comment" id="comment" placeholder="Write your comment here..." class="comment-field"></textarea>';
+
+        echo '<button type="submit" class="btn" name="review_paper">Post review</button>
+    </form>';
+    }
+    ?>
+    <!-- Review Section End -->
 
     <!-- Footer Start -->
     <div class="footer container-fluid position-relative bg-dark bg-light-radial text-white-50 py-6 px-5">
@@ -87,7 +108,7 @@
                 <a href="index.php" class="navbar-brand">
                     <h1 class="m-0 display-4 text-uppercase text-white"><i class="bi bi-building text-primary me-2"></i>WEBUILD</h1>
                 </a>
-                <p>Aliquyam sed elitr elitr erat sed diam ipsum eirmod eos lorem nonumy. Tempor sea ipsum diam  sed clita dolore eos dolores magna erat dolore sed stet justo et dolor.</p>
+                <p>Aliquyam sed elitr elitr erat sed diam ipsum eirmod eos lorem nonumy. Tempor sea ipsum diam sed clita dolore eos dolores magna erat dolore sed stet justo et dolor.</p>
                 <p><i class="fa fa-map-marker-alt me-2"></i>123 Street, New York, USA</p>
                 <p><i class="fa fa-phone-alt me-2"></i>+012 345 67890</p>
                 <p><i class="fa fa-envelope me-2"></i>info@example.com</p>

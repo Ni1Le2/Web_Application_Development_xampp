@@ -123,13 +123,33 @@
                 // display paper part
                 echo '<li class="list-group-item"> <a target="_blank" class="text-dark" href=papers/' . $row["filename"] . '>' . $row["title"] . ' - ' . $row["author"] . ' (' . $row["year"] . ') <i class="bi bi-download"></i></a></li>';
                 $paper_title = $row['title'];
+                // get average rating
                 $query = mysqli_query($conn, "SELECT AVG(rating) as AVGRATE FROM reviews WHERE paper_title='$paper_title'");
-                $row = mysqli_fetch_array($query);
-                $AVGRATE = round($row['AVGRATE'], 1);
+                $res = mysqli_fetch_array($query);
+                $AVGRATE = round($res['AVGRATE'], 1);
+                // get total number of ratings
                 $query = mysqli_query($conn, "SELECT count(rating) as NumberRates from reviews WHERE paper_title='$paper_title'");
-                $row = mysqli_fetch_array($query);
-                $NumberRates = $row['NumberRates'];
+                $res = mysqli_fetch_array($query);
+                $NumberRates = $res['NumberRates'];
+                // display average rating and total number of ratings
                 echo '<li class="list-group-item"> <p> Average rating: ' . $AVGRATE . ' (Total ratings: ' . $NumberRates . ')</p></li>';
+                // find out if user has reviewed paper yet, if not he can review it here
+                $email = $_SESSION['email'];
+                // get the logged in researchers comments on other peoples papers
+                $query = "SELECT * FROM reviews WHERE email='$email' AND paper_title='$paper_title'";
+                $query_res = $conn->query($query);
+                // if researcher already made a review, paper and the review are shown
+                if ($query_res->num_rows > 0) {
+                    $query_row = $query_res->fetch_assoc();
+                    echo '<li class="list-group-item"> <p>Your rating: ' . $query_row['rating'] . '</p>';
+                    echo '<textarea class="comment-field" readonly> ' . $query_row['comment'] . '</textarea> </li>';
+                } 
+                // otherwise he can comment on the paper
+                else {
+                    $review_page = './review.php?title='.$paper_title;
+                    echo '<a class="btn" href='.$review_page.'>Review this paper<a>';
+
+                }
             }
 
             echo '</ul> <br>';

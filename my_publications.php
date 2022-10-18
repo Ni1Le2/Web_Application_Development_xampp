@@ -147,7 +147,7 @@ $email = $_SESSION['email'];
                     echo '<li class="list-group-item"> <a target="_blank" class="text-dark" href=papers/' . $row["filename"] . '>' . $row["title"] . ' - ' . $row["author"] . ' (' . $row["year"] . ') <i class="bi bi-download"></i></a></li>';
                     $query_row = $query_res->fetch_assoc();
                     echo '<li class="list-group-item"> <p>Your rating: ' . $query_row['rating'] . '</p>';
-                    echo '<textarea rows="2" cols="100" readonly> ' . $query_row['comment'] . '</textarea> </li>';
+                    echo '<textarea class="comment-field" readonly> ' . $query_row['comment'] . '</textarea> </li>';
                 }
             }
             echo '</ul> <br>';

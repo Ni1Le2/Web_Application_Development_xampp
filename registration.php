@@ -77,9 +77,8 @@
       <?php include('php/errors.php'); ?>
       <p>
          <label for="title">Title:</label>
-         <input type="radio" id="title" name="title" checked="checked">
          <label for="title">None</label><br>
-         <input type="radio" id="title" name="title">
+         <input type="radio" id="title" name="title" checked="checked">
          <label for="title">Ms.</label><br>
          <input type="radio" id="title" name="title">
          <label for="title">Mr.</label><br>

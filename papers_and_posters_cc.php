@@ -137,7 +137,7 @@
                 if ($query_res->num_rows > 0) {
                     while ($query_row = $query_res->fetch_assoc()) {
                             echo '<li class="list-group-item"> <p>Comment by: ' . $query_row['email'] . '</p>';
-                        echo '<textarea rows="2" cols="100" readonly> ' . $query_row['comment'] . '</textarea> </li>';
+                        echo '<textarea class="comment-field" readonly> ' . $query_row['comment'] . '</textarea> </li>';
                     }
                 } else {
                     echo '<li class="list-group-item">No comments on this paper yet.</li>';

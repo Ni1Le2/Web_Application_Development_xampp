@@ -9,3 +9,8 @@
     - text areas?
 - add option for cc to add news on homepage
 (- add option for cc to suggest changes for paper)
+- delete unused classes from stylesheet
+- delete and reupload papers (also in papers folder)
+- create conference chair users
+- main.js file??
+- delete unnescessary images

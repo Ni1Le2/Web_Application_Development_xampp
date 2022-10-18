@@ -1,4 +1,6 @@
-<?php include('php/server.php') ?>
+<?php session_start(); 
+include('php/server.php') ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -73,6 +75,7 @@
     <!-- Page Header End -->
 
     <!-- Upload Section Start -->
+    <h1 class="heading-style text-white">Upload your publication:</h1>
     <form action=upload.php method="post" enctype="multipart/form-data">
         <?php include('php/errors.php'); ?>
         <p>

@@ -47,8 +47,8 @@ if (isset($_POST['reg_user'])) {
     }
     // Finally, register user if there are no errors in the form
     if (count($errors) == 0) {
-        //$password = md5($password_1); //encrypt the password before saving in the database
-        $password = $password_1;
+        // encrypt password
+        $password = md5($password_1); 
         $query = "INSERT INTO users(title,firstName, surname ,email, password, affiliateOrganisation, conference_chair)  VALUES ('$title',
             '$firstName', '$surname', '$email','$password', '$affiliateOrganisation', 0)";
         mysqli_query($con, $query);
@@ -63,9 +63,11 @@ if (isset($_POST['reg_user'])) {
 // User Sign In
 if (isset($_POST['login_user'])) {
     $email = mysqli_real_escape_string($con, $_POST['email']);
+    
     $password = mysqli_real_escape_string($con, $_POST['password']);
-    if (count($errors) == 0) {
-        //$password = md5($password);
+    if (count($errors) == 0) {        
+        // check for encrypted password
+        $password = md5($password);
         $query = "SELECT * FROM users WHERE email='$email' AND password='$password'";
         $results = mysqli_query($con, $query);
         $row = $results->fetch_assoc();
@@ -153,6 +155,7 @@ if (isset($_POST['review_paper'])) {
             '$rating', '$comment', '$paper_title')";
         mysqli_query($con, $query);
     }
+    header("Location: ./papers_and_posters.php#publ");
 }
 
 // Reject paper
