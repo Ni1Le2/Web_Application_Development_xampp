@@ -1,12 +1,14 @@
 <?php
-session_start();
-
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 if (isset($_GET['logout'])) {
     session_destroy();
     unset($_SESSION['email']);
     unset($_SESSION['conference_chair']);
 }
 ?>
+<?php include('php/server.php') ?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -54,14 +56,14 @@ if (isset($_GET['logout'])) {
     <!-- Navbar Start -->
     <div id="navbar" class="container-fluid sticky-top bg-dark bg-light-radial shadow-sm px-5 pe-lg-0">
     </div>
-    <?php 
+    <?php
     // if there is a conference chair value assigned to session, a user is logged in
     if (isset($_SESSION['conference_chair'])) {
         // check if user is researcher or conference chair and display respective navbar
         if ($_SESSION['conference_chair'] == 0) {
-        echo '<script src="js/nav_loggedin_res.js"></script>';
+            echo '<script src="js/nav_loggedin_res.js"></script>';
         } else { // display loggedout navbar
-        echo '<script src="js/nav_loggedin_cc.js"></script>';
+            echo '<script src="js/nav_loggedin_cc.js"></script>';
         }
     } else {
         echo '<script src="js/nav_loggedout.js"></script>';
@@ -69,39 +71,97 @@ if (isset($_GET['logout'])) {
     ?>
     <!-- Navbar End -->
 
+    <!-- Page Header Start -->
+    <div class="container-fluid page-header">
+        <h1 class="display-3 text-uppercase text-white mb-3">Home</h1>
+    </div>
+    <br>
+<!-- Page Header End -->
 
     <!-- Home Start -->
     <div id="news" class="container-fluid">
-        <h1 class="heading-style text-white">News:</h1> <br>
+        <h1 class="heading-style text-white">News:</h1>
+        <?php
+        // connect to websitedb
+        $servername = "localhost";
+        $username = "nico";
+        $password = "yeah";
+        $dbname = "websitedb";
+
+        // Create connection
+        $conn = new mysqli($servername, $username, $password, $dbname);
+        // Check connection
+        if ($conn->connect_error) {
+            die("Connection failed: " . $conn->connect_error);
+        }
+        // to display all news
+        $query = "SELECT * FROM news";
+        $message_res = $conn->query($query);
+
+        if ($message_res->num_rows > 0) {
+            while ($row = $message_res->fetch_assoc()) {
+                // display news message
+                echo '<div class="small-text-section">' . $row['message'] . '</div>';
+                // form + button to remove this message
+                echo '<form method="post" action="index.php?msg_id=' . $row['ID'] . '"><br>';
+                echo '<button type="submit" class="btn" name="remove_news">Remove</button></form>';
+                echo '<br>';
+            }
+        } else {
+            echo '<ul class = "list-group">
+           <li class="list-group-item"> <strong>No news have been announced.</strong></li></ul><br>';;
+        }
+        ?>
+        <?php
+        // if there is a conference chair value assigned to session, a user is logged in
+        if (isset($_SESSION['conference_chair'])) {
+            // if user is conference chair he can add news
+            if ($_SESSION['conference_chair'] == 1) {
+                echo '<form method="post" action="php/server.php">';
+                echo '<textarea name="news" id="news" placeholder="Write news announcement here..." class="comment-field"></textarea>';
+                echo '<button type="submit" class="btn" name="add_news">Add News</button></form><br><br>';
+            }
+        }
+        ?>
+
+        <!-- About Start -->
+        <h1 class="heading-style text-white">About:</h1> <br>
+        <h2>Conference venue and time:</h2> <br>
+        <div class="text-section">
+            The 4th International Conference on Advanced Technologies for Humanity (ICATH'2022) is organized by the Moroccan School of Engineering Sciences (EMSI) in collaboration with nationals and internationals institutes (INSEA, INPT, UM5-FSR, ENSA-Kenitra, Karadeniz Technical University and Future Univeristy of Egypt). This edition will be held in Marrakech, the historical and touristic city of Morocco, from 11 to 12 November 2022, at Riad Ennakhil - Hotel & SPA.
+        </div><br>
+        <h2>Aim of ICATH'2022:</h2> <br>
+        <div class="text-section">
+            Advances in science and engineering have lower impact when the human perspective is ignored. For this reason, ICATH’2022 aims at establishing this vital link in order to magnify such benefits. This conference is focused on discussing practical and innovative technological solutions to everyday challenges that humans face.
+        </div><br>
+        <h2>Keynote speakers:</h2> <br>
+        <div class="text-section">
+            Keynote speakers for the conference include but are not limited to: Prof. Joong HEE LEE from Jeonbuk National University, Ahmet Can ALTUNIŞIK from Karadeniz Technical University, Amal El Fallah SEGHROUNI, and Rajan Sen from University of South Florida.
+        </div><br><br>
+        <!-- About End -->
+
         <h1 class="heading-style text-white">Upcoming events:</h1> <br>
     </div> <br>
     <!-- Home End -->
 
     <!-- Footer Start -->
-    <div class="footer container-fluid position-relative bg-dark bg-light-radial text-white-50 py-6 px-5">
+    <div class="footer container-fluid position-relative bg-dark bg-light-radial text-white-50 py-5 px-5">
         <div class="row g-5">
             <div class="col-lg-6 pe-lg-5">
                 <a href="index.php" class="navbar-brand">
                     <h1 class="m-0 display-7 text-uppercase text-white"><img src="img/ICATH_logo.jpg" alt="ITAC_image" width="50" height="50" />ICATH2022</h1>
                 </a>
-                <p><i class="fa fa-map-marker-alt me-2"></i>50 Independence Avenue, Windhoek, Namibia</p>
-                <p><i class="fa fa-phone-alt me-2"></i>+264 081 3274927</p>
-                <p><i class="fa fa-envelope me-2"></i>icath@info.com</p>
+                <p> Nico Leng:</p>
+                <p><i class="fa fa-map-marker-alt me-2"></i>13 Jackson Kaujeua Street (Windhoek, Namibia)</p>
+                <p><i class="fa fa-envelope me-2"></i>niconico.leng@googlemail.com</p>
 
             </div>
             <div class="col-lg-6 ps-lg-5">
-                <div class="row g-5">
-                    <div class="col-sm-6">
-                        <h4 class="text-white text-uppercase mb-4">Popular Links</h4>
-                        <div class="d-flex flex-column justify-content-start">
-                            <a class="text-white-50 mb-2" href="#"><i class="fa fa-angle-right me-2"></i>Home</a>
-                            <a class="text-white-50 mb-2" href="#"><i class="fa fa-angle-right me-2"></i>About Us</a>
-                            <a class="text-white-50 mb-2" href="#"><i class="fa fa-angle-right me-2"></i>Our Services</a>
-                            <a class="text-white-50 mb-2" href="#"><i class="fa fa-angle-right me-2"></i>Meet The Team</a>
-                            <a class="text-white-50" href="#"><i class="fa fa-angle-right me-2"></i>Contact Us</a>
-                        </div>
-                    </div>
-                </div>
+                <p style="margin:5em;"></p>
+                <p> Onni Kivistoe:</p>
+                <p><i class="fa fa-map-marker-alt me-2"></i>13 Jackson Kaujeua Street (Windhoek, Namibia)</p>
+                <p><i class="fa fa-envelope me-2"></i>onni.kivisto@gmail.com</p>
+
             </div>
         </div>
     </div>

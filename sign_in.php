@@ -47,6 +47,7 @@
     <div id="navbar" class="container-fluid sticky-top bg-dark bg-light-radial shadow-sm px-5 pe-lg-0" id="navbar">
     </div>
     <script src="js/nav_loggedout.js"></script>
+    <br>
     <!-- Navbar End -->
 
     <!-- Sign in Window Start -->

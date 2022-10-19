@@ -69,16 +69,18 @@
          <h6 class="text-uppercase text-white m-0">Registration</h6>
       </div>
    </div>
-   <!-- Page Header End -->
+   <br>
+<!-- Page Header End -->
 
    <!-- Registration form start -->
    <h1 class="heading-style text-white">Registration:</h1>
    <form method="post" action="registration.php">
       <?php include('php/errors.php'); ?>
       <p>
-         <label for="title">Title:</label>
-         <label for="title">None</label><br>
+         <label for="title">Title:</label> <br>
          <input type="radio" id="title" name="title" checked="checked">
+         <label for="title">None</label><br>
+         <input type="radio" id="title" name="title">
          <label for="title">Ms.</label><br>
          <input type="radio" id="title" name="title">
          <label for="title">Mr.</label><br>

@@ -1,16 +1,34 @@
-- test all functionalities
+- test all functionalities:
+    - registration: general, with "wrong" inputs, with too long inputs?
+    - sign in: different user types + functions, password encryption
+    - researcher:
+        - upload paper: with "wrong" date input, non-pdf type + fix problem with spaces in names
+        - download papers (different papers to check)
+        - rating: rate without comment, comment without rate (should not be possible), see ratings in "my papers"
+        - see comments made to own paper: everything working?
+    - conference chair:
+        - refuse/accept paper
+        - recommend changes?? -> conference chair comment maybe?
+        - see all comments made to papers
+        - new papers working?
+        - add news?
 - clean up code
 - add comments
-- remove unescessary files 
 - folder structure?
-- make css style for:
-    - displayed paper
-    - comments and ratings
-    - text areas?
-- add option for cc to add news on homepage
-(- add option for cc to suggest changes for paper)
 - delete unused classes from stylesheet
 - delete and reupload papers (also in papers folder)
 - create conference chair users
 - main.js file??
 - delete unnescessary images
+- maybe change registration_success and upload_success
+
+------------------------------------
+
+done: 
+- add option for cc to add news on homepage
+- make css style for:
+    - displayed paper
+    - comments and ratings
+    - text areas?
+- add option for cc to suggest changes for paper
+- remove unescessary files 

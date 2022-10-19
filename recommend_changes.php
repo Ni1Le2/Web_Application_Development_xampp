@@ -63,11 +63,11 @@
 
     <!-- Page Header Start -->
     <div class="container-fluid page-header ">
-        <h1 class="display-3 text-uppercase text-white mb-3">Review Paper</h1>
+        <h1 class="display-3 text-uppercase text-white mb-3">Recommended Changes</h1>
         <div class="d-inline-flex text-white">
             <h6 class="text-uppercase m-0"><a href="index.php">Home</a></h6>
             <h6 class="text-white m-0 px-3">/</h6>
-            <h6 class="text-uppercase text-white m-0">Papers & Posters</h6>
+            <h6 class="text-uppercase text-white m-0">New Publications</h6>
         </div>
     </div>
     <br>
@@ -78,25 +78,11 @@
     <?php
     if (isset($_GET['title'])) {
         $title = $_GET['title'];
-
+        
         echo '<form method="post" action="review.php?title='.$title.'">';
         include('php/errors.php');
-        echo '<p>Rate the paper on a scale from 1 (very bad) to 5 (very good):</p>
-                    <p>
-                        <input type="radio" id="rating" name="rating" value="1">
-                        <label>1 (very bad)</label>
-                        <input type="radio" id="rating" name="rating" value="2">
-                        <label>2 (bad)</label>
-                        <input type="radio" id="rating" name="rating" value="3" checked="checked">
-                        <label>3 (ok)</label>
-                        <input type="radio" id="rating" name="rating" value="4">
-                        <label>4 (good)</label>
-                        <input type="radio" id="rating" name="rating" value="5">
-                        <label>5 (very good)</label></p>';
-
-        echo '<textarea name="comment" id="comment" placeholder="Write your comment here..." class="comment-field"></textarea>';
-
-        echo '<button type="submit" class="btn" name="review_paper">Post review</button>
+        echo '<textarea name="remark" id="remark" placeholder="Write your recommended changes..." class="comment-field" required></textarea>';
+        echo '<button type="submit" class="btn" name="rec_changes">Recommend changes</button>
     </form>';
     }
     ?>

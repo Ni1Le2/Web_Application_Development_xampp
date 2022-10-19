@@ -88,6 +88,7 @@ $email = $_SESSION['email'];
             <h6 class="text-uppercase text-white m-0">My Papers</h6>
         </div>
     </div>
+    <br>
     <!-- Page Header End -->
 
     <!-- Publications Start -->
@@ -103,16 +104,33 @@ $email = $_SESSION['email'];
             // go through each row found
             while ($row = $result->fetch_assoc()) {
                 // display paper with a link to download it
-                echo '<li class="list-group-item"> <a target="_blank" class="text-dark" href=papers/' . $row["filename"] . '>' . $row["title"] . ' - ' . $row["author"] . ' (' . $row["year"] . ') <i class="bi bi-download"></i></a></li>';
+                if ($row['status'] == 1) {
+                    echo '<li class="list-group-item paper-style"> <a target="_blank" class="text-dark" href=papers/' . $row["filename"] . '>' . $row["title"] . ' - ' . $row["author"] . ' (' . $row["year"] . ') <i class="bi bi-download"></i>&nbsp&nbsp&nbsp (accepted)</a></li>';
+                } elseif ($row['status'] == 0) {
+                    echo '<li class="list-group-item paper-style-pending"> <a target="_blank" class="text-dark" href=papers/' . $row["filename"] . '>' . $row["title"] . ' - ' . $row["author"] . ' (' . $row["year"] . ') <i class="bi bi-download"></i>&nbsp&nbsp&nbsp (not accepted yet)</a></li>';
+                } else {
+                    echo '<li class="list-group-item paper-style-rejected"> <a target="_blank" class="text-dark" href=papers/' . $row["filename"] . '>' . $row["title"] . ' - ' . $row["author"] . ' (' . $row["year"] . ') <i class="bi bi-download"></i>&nbsp&nbsp&nbsp (rejected)</a></li>';
+                }
                 $paper_title = $row['title'];
+                // select all recommended changes to this paper and dsiplay them
+                $changes_query = "SELECT * FROM recommended_changes WHERE paper='$paper_title'";
+                $changes_query_res = $conn->query($changes_query);
+                // if there are any display all of them
+                if ($changes_query_res->num_rows > 0) {
+                    echo '<li class="list-group-item"> <strong>Recommended Changes:</strong></li>';
+                    while ($message_row = $changes_query_res->fetch_assoc()) {
+                        echo '<li class="list-group-item"> <textarea class="comment-field" readonly> ' . $message_row['remark'] . '</textarea> </li>';
+                    }
+                }
                 // select all reviews to this paper
                 $comment_query = "SELECT * FROM reviews WHERE paper_title='$paper_title'";
                 $comment_query_res = $conn->query($comment_query);
                 // if there are any display all of them
                 if ($comment_query_res->num_rows > 0) {
+                    echo '<li class="list-group-item"> <strong>Comments:</strong></li>';
                     while ($review_row = $comment_query_res->fetch_assoc()) {
                         echo '<li class="list-group-item"> <p>Rating: ' . $review_row['rating'] . '</p>';
-                        echo '<textarea rows="2" cols="100" readonly> ' . $review_row['comment'] . '</textarea> </li>';
+                        echo '<textarea class="comment-field" readonly> ' . $review_row['comment'] . '</textarea> </li>';
                     }
                 } else {
                     echo '<li class="list-group-item"> <p>(Your paper has not been rated yet. If it is rated, ratings and comments will be displayed here)</p>';
@@ -144,7 +162,7 @@ $email = $_SESSION['email'];
                 $query_res = $conn->query($query);
                 // if researcher already made a review, paper and the review are shown
                 if ($query_res->num_rows > 0) {
-                    echo '<li class="list-group-item"> <a target="_blank" class="text-dark" href=papers/' . $row["filename"] . '>' . $row["title"] . ' - ' . $row["author"] . ' (' . $row["year"] . ') <i class="bi bi-download"></i></a></li>';
+                    echo '<li class="list-group-item paper-style"> <a target="_blank" class="text-dark" href=papers/' . $row["filename"] . '>' . $row["title"] . ' - ' . $row["author"] . ' (' . $row["year"] . ') <i class="bi bi-download"></i></a></li>';
                     $query_row = $query_res->fetch_assoc();
                     echo '<li class="list-group-item"> <p>Your rating: ' . $query_row['rating'] . '</p>';
                     echo '<textarea class="comment-field" readonly> ' . $query_row['comment'] . '</textarea> </li>';
@@ -159,74 +177,28 @@ $email = $_SESSION['email'];
     </div> <br>
     <!-- My Comments End -->
 
-    <!-- Footer Start -->
-    <div class="footer container-fluid position-relative bg-dark bg-light-radial text-white-50 py-6 px-5">
+        <!-- Footer Start -->
+        <div class="footer container-fluid position-relative bg-dark bg-light-radial text-white-50 py-5 px-5">
         <div class="row g-5">
             <div class="col-lg-6 pe-lg-5">
                 <a href="index.php" class="navbar-brand">
-                    <h1 class="m-0 display-4 text-uppercase text-white"><i class="bi bi-building text-primary me-2"></i>WEBUILD</h1>
+                    <h1 class="m-0 display-7 text-uppercase text-white"><img src="img/ICATH_logo.jpg" alt="ITAC_image" width="50" height="50" />ICATH2022</h1>
                 </a>
-                <p>Aliquyam sed elitr elitr erat sed diam ipsum eirmod eos lorem nonumy. Tempor sea ipsum diam sed clita dolore eos dolores magna erat dolore sed stet justo et dolor.</p>
-                <p><i class="fa fa-map-marker-alt me-2"></i>123 Street, New York, USA</p>
-                <p><i class="fa fa-phone-alt me-2"></i>+012 345 67890</p>
-                <p><i class="fa fa-envelope me-2"></i>info@example.com</p>
-                <div class="d-flex justify-content-start mt-4">
-                    <a class="btn btn-lg btn-primary btn-lg-square rounded-0 me-2" href="#"><i class="fab fa-twitter"></i></a>
-                    <a class="btn btn-lg btn-primary btn-lg-square rounded-0 me-2" href="#"><i class="fab fa-facebook-f"></i></a>
-                    <a class="btn btn-lg btn-primary btn-lg-square rounded-0 me-2" href="#"><i class="fab fa-linkedin-in"></i></a>
-                    <a class="btn btn-lg btn-primary btn-lg-square rounded-0" href="#"><i class="fab fa-instagram"></i></a>
-                </div>
+                <p> Nico Leng:</p>
+                <p><i class="fa fa-map-marker-alt me-2"></i>13 Jackson Kaujeua Street (Windhoek, Namibia)</p>
+                <p><i class="fa fa-envelope me-2"></i>niconico.leng@googlemail.com</p>
+
             </div>
             <div class="col-lg-6 ps-lg-5">
-                <div class="row g-5">
-                    <div class="col-sm-6">
-                        <h4 class="text-white text-uppercase mb-4">Quick Links</h4>
-                        <div class="d-flex flex-column justify-content-start">
-                            <a class="text-white-50 mb-2" href="#"><i class="fa fa-angle-right me-2"></i>Home</a>
-                            <a class="text-white-50 mb-2" href="#"><i class="fa fa-angle-right me-2"></i>About Us</a>
-                            <a class="text-white-50 mb-2" href="#"><i class="fa fa-angle-right me-2"></i>Our Services</a>
-                            <a class="text-white-50 mb-2" href="#"><i class="fa fa-angle-right me-2"></i>Meet The Team</a>
-                            <a class="text-white-50" href="#"><i class="fa fa-angle-right me-2"></i>Contact Us</a>
-                        </div>
-                    </div>
-                    <div class="col-sm-6">
-                        <h4 class="text-white text-uppercase mb-4">Popular Links</h4>
-                        <div class="d-flex flex-column justify-content-start">
-                            <a class="text-white-50 mb-2" href="#"><i class="fa fa-angle-right me-2"></i>Home</a>
-                            <a class="text-white-50 mb-2" href="#"><i class="fa fa-angle-right me-2"></i>About Us</a>
-                            <a class="text-white-50 mb-2" href="#"><i class="fa fa-angle-right me-2"></i>Our Services</a>
-                            <a class="text-white-50 mb-2" href="#"><i class="fa fa-angle-right me-2"></i>Meet The Team</a>
-                            <a class="text-white-50" href="#"><i class="fa fa-angle-right me-2"></i>Contact Us</a>
-                        </div>
-                    </div>
-                    <div class="col-sm-12">
-                        <h4 class="text-white text-uppercase mb-4">Newsletter</h4>
-                        <div class="w-100">
-                            <div class="input-group">
-                                <input type="text" class="form-control border-light" style="padding: 20px 30px;" placeholder="Your Email Address"><button class="btn btn-primary px-4">Sign Up</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="container-fluid bg-dark bg-light-radial text-white border-top border-primary px-0">
-        <div class="d-flex flex-column flex-md-row justify-content-between">
-            <div class="py-4 px-5 text-center text-md-start">
-                <p class="mb-0">&copy; <a class="text-primary" href="#">Your Site Name</a>. All Rights Reserved.</p>
-            </div>
-            <div class="py-4 px-5 bg-primary footer-shape position-relative text-center text-md-end">
-                <p class="mb-0">Designed by <a class="text-dark" href="https://htmlcodex.com">HTML Codex</a></p>
+                <p style="margin:5em;"></p>
+                <p> Onni Kivistoe:</p>
+                <p><i class="fa fa-map-marker-alt me-2"></i>13 Jackson Kaujeua Street (Windhoek, Namibia)</p>
+                <p><i class="fa fa-envelope me-2"></i>onni.kivisto@gmail.com</p>
+
             </div>
         </div>
     </div>
     <!-- Footer End -->
-
-
-    <!-- Back to Top -->
-    <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
-
 
     <!-- JavaScript Libraries -->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
