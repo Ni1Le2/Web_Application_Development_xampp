@@ -1,3 +1,5 @@
+// the navbar is strongly inspired by the the navbar of a free html template I found online (https://www.free-css.com/free-css-templates/page283/webuild), however only the navbar and button style are taken from this template
+
 // this is the html code for the navbar, implemented this way, to have the same navbar for all the pages
 // without needing to change them all individually
 
