@@ -1,21 +1,11 @@
-- make plan for presentation:
-    - what will be pre created: conf chair user, 2 researcher, example paper that is accepted with comments, example paper that is not accepted
-    - what will I show:
-        - register user
-        - logout + sign in
-        - upload paper
-        - rate and comment other paper
-        - cc: see all comments, recommend changes, reject/accept paper, add news, show for loggedout user, delete news
-        - look at own papers and comments
+TODO:
 
-
-- delete and reupload papers (also in papers folder)
-- write guide for code/explanations/README
 
 ------------------------------------
 
 done: 
 - create conference chair users
+- delete and reupload papers (also in papers folder)
 - reset all indizes (ALTER TABLE tablename AUTO_INCREMENT = 1)
 - add option for cc to add news on homepage
 - make css style for:
