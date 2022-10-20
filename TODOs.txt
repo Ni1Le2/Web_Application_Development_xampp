@@ -1,3 +1,29 @@
+- make plan for presentation:
+    - what will be pre created: conf chair user, 2 researcher, example paper that is accepted with comments, example paper that is not accepted
+    - what will I show:
+        - register user
+        - logout + sign in
+        - upload paper
+        - rate and comment other paper
+        - cc: see all comments, recommend changes, reject/accept paper, add news, show for loggedout user, delete news
+        - look at own papers and comments
+
+
+- delete and reupload papers (also in papers folder)
+- write guide for code/explanations/README
+
+------------------------------------
+
+done: 
+- create conference chair users
+- reset all indizes (ALTER TABLE tablename AUTO_INCREMENT = 1)
+- add option for cc to add news on homepage
+- make css style for:
+    - displayed paper
+    - comments and ratings
+    - text areas?
+- add option for cc to suggest changes for paper
+- remove unescessary files 
 - test all functionalities:
     - registration: general, with "wrong" inputs, with too long inputs?
     - sign in: different user types + functions, password encryption
@@ -8,27 +34,11 @@
         - see comments made to own paper: everything working?
     - conference chair:
         - refuse/accept paper
-        - recommend changes?? -> conference chair comment maybe?
+        - recommend changes
         - see all comments made to papers
         - new papers working?
-        - add news?
+        - add news
+- delete unnescessary files and images
+- maybe change registration_success and upload_success
 - clean up code
 - add comments
-- folder structure?
-- delete unused classes from stylesheet
-- delete and reupload papers (also in papers folder)
-- create conference chair users
-- main.js file??
-- delete unnescessary images
-- maybe change registration_success and upload_success
-
-------------------------------------
-
-done: 
-- add option for cc to add news on homepage
-- make css style for:
-    - displayed paper
-    - comments and ratings
-    - text areas?
-- add option for cc to suggest changes for paper
-- remove unescessary files 

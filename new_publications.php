@@ -22,10 +22,9 @@ $email = $_SESSION['email'];
 
 <head>
     <meta charset="utf-8">
-    <title>WEBUILD - Construction Company Website Template Free</title>
+    <title>ICATH'2022 Website - Web Application Development</title>
+    <meta name="author" content="Nico , Onni Kivistoe">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <meta content="Free HTML Templates" name="keywords">
-    <meta content="Free HTML Templates" name="description">
 
     <!-- Favicon -->
     <link href="img/icon.ico" rel="icon">
@@ -46,9 +45,8 @@ $email = $_SESSION['email'];
     <!-- Customized Bootstrap Stylesheet -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
 
-    <!-- Template Stylesheet -->
+    <!-- CSS Stylesheet -->
     <link href="css/style.css" rel="stylesheet">
-
 </head>
 
 <body>
@@ -105,7 +103,7 @@ $email = $_SESSION['email'];
             while ($row = $result->fetch_assoc()) {
                 $paper_title = $row["title"];
                 // display paper with a link to download it 
-                echo '<li class="list-group-item paper-style"> <a target="_blank" class="text-dark" href=papers/' . $row["filename"] . '>' . $row["title"] . ' - ' . $row["author"] . ' (' . $row["year"] . ') <i class="bi bi-download"></i></a></li>';
+                echo '<li class="list-group-item paper-style-pending"> <a target="_blank" class="text-dark" href=papers/' . $row["filename"] . '>' . $row["title"] . ' - ' . $row["author"] . ' (' . $row["year"] . ') <i class="bi bi-download"></i></a></li>';
                 // get all recommended changes made to this paper and display them with the email of the person who recommended the changes
                 $query = "SELECT * FROM recommended_changes WHERE paper='$paper_title'";
                 $rec_ch_result = $conn->query($query);
@@ -118,20 +116,20 @@ $email = $_SESSION['email'];
                 }
                 // accept paper form with button
                 echo '<div class="btn-toolbar" role="group" aria-label="Basic example">';
-                echo '<p> <form method="post" action="papers_and_posters_cc.php?title=' . $paper_title . '">';
+                echo '<p> <form method="post" action="publications_cc.php?title=' . $paper_title . '"><br>';
                 include('php/errors.php');
                 echo '<button type="submit" class="btn" name="accept_paper">Accept</button>
                     </form>';
                 // reject paper form with button
-                echo '<form method="post" action="papers_and_posters_cc.php?title=' . $paper_title . '">';
+                echo '<form method="post" action="publications_cc.php?title=' . $paper_title . '"><br>';
                 include('php/errors.php');
                 echo '<button type="submit" class="btn" name="reject_paper">Reject</button>
                     </form></p></div><br>';
                 // button to get to recommend changes paper page
                 $rec_changes_page = './recommend_changes.php?title='.$paper_title;
-                echo '<a class="btn" href='.$rec_changes_page.'>Recommend changes<a>';
+                echo '<a class="btn" href='.$rec_changes_page.'>Recommend changes<a><br><br>';
             }
-            echo '</ul> <br>';
+            echo '</ul>';
         }
         ?>
         <?php
@@ -175,14 +173,6 @@ $email = $_SESSION['email'];
     <!-- JavaScript Libraries -->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="lib/easing/easing.min.js"></script>
-    <script src="lib/waypoints/waypoints.min.js"></script>
-    <script src="lib/owlcarousel/owl.carousel.min.js"></script>
-    <script src="lib/tempusdominus/js/moment.min.js"></script>
-    <script src="lib/tempusdominus/js/moment-timezone.min.js"></script>
-    <script src="lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
-    <script src="lib/isotope/isotope.pkgd.min.js"></script>
-    <script src="lib/lightbox/js/lightbox.min.js"></script>
 
     <!-- Template Javascript -->
     <script src="js/main.js"></script>

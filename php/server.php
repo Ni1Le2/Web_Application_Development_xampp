@@ -1,4 +1,5 @@
 <?php
+// start session if it has not been started (important for Session-variables)
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
@@ -17,7 +18,7 @@ if ($con === false) {
         . mysqli_connect_error());
 }
 
-// initializing variable for errors
+// initializing variable for errors, all errors that might occur will be pushed to this array
 $errors = array();
 
 // function to simplify getting results of select statements
@@ -43,28 +44,45 @@ if (isset($_POST['reg_user'])) {
     $affiliateOrganisation = mysqli_real_escape_string($con, $_POST['affiliateOrganisation']);
 
     // validation: ensure that the form is correctly filled
-    // by adding (array_push()) corresponding error unto $errors array
+    // push corresponding error into $errors array to display it
+    // remarks: no need to check password length, as it is md5 encrypted and will thus always be of length 32
+    //          no need to check title as it can only be chosen (not typed) and will never be too long
+    // check for string lenghts to ensure no string is larger than the space reserved in the db-table
+    if (strlen($firstName) > 15) {
+        array_push($errors, "The entered first name is too long, it can only have a maximum of 15 characters");
+    }
+    if (strlen($surname) > 15) {
+        array_push($errors, "The entered surname is too long, it can only have a maximum of 15 characters");
+    }
+    if (strlen($email) > 30) {
+        array_push($errors, "The entered email is too long, it can only have a maximum of 30 characters");
+    }
+    if (strlen($affiliateOrganisation) > 30) {
+        array_push($errors, "The entered organisation name is too long, it can only have a maximum of 30 characters");
+    }
+    // check if passwords match
     if ($password_1 != $password_2) {
         array_push($errors, "The two passwords do not match");
     }
-    // now we need to check the database to make sure the email address is not used for another user
+    // make sure email address is not used for another user
     $user_check_query = "SELECT * FROM users WHERE email='$email' LIMIT 1";
     $user_row = get_selected_lines($con, $user_check_query);
-
     if ($user_row) {
         if ($user_row['email'] === $email) {
-            array_push($errors, "email already registered");
+            array_push($errors, "This email is already registered");
         }
     }
     // Finally, register user if there are no errors in the form
     if (count($errors) == 0) {
-        // encrypt password
+        // encrypt password to md5
         $password = md5($password_1);
+        // newly registered users are always researcher, all conference chair users are pre-created
         $query = "INSERT INTO users(title,firstName, surname ,email, password, affiliateOrganisation, conference_chair)  VALUES ('$title',
             '$firstName', '$surname', '$email','$password', '$affiliateOrganisation', 0)";
         mysqli_query($con, $query);
+        // log user into system by setting Session variables
         $_SESSION['email'] = $email;
-        // newly registered users are always researcher, all conference chair users are pre-created
+        // newly registered users are always researchers, never conference chair
         $_SESSION['conference_chair'] = 0;
         $_SESSION['success'] = "You are now logged in";
         header('location: index.php');
@@ -74,7 +92,6 @@ if (isset($_POST['reg_user'])) {
 // User Sign In
 if (isset($_POST['login_user'])) {
     $email = mysqli_real_escape_string($con, $_POST['email']);
-
     $password = mysqli_real_escape_string($con, $_POST['password']);
     if (count($errors) == 0) {
         // check for encrypted password
@@ -94,40 +111,61 @@ if (isset($_POST['login_user'])) {
 }
 
 // User Sign Out
+if (isset($_GET['logout'])) {
+    // sign user out by unsetting all session variables and ending the session
+    session_destroy();
+    unset($_SESSION['email']);
+    unset($_SESSION['conference_chair']);
+    unset($_SESSION['success']);
+    header('location: ../sign_in.php');
+}
 
 // Upload Paper
 if (isset($_POST['upload'])) {
-    $title = $_REQUEST['title'];
+    // get title and year from the user input
+    $title = mysqli_real_escape_string($con, $_POST['title']);
     $year =  $_REQUEST['year'];
+    // check for errors in input
+    // title with spaces lead to errors, so this is the easiest fix
+    if (strpos($title, ' ') !== false) {
+        array_push($errors, 'Please do not use spaces in your paper title, use "_" instead');
+      }
+    // length of title max 100 in db-table
+    if (strlen($title) > 100) {
+        array_push($errors, "The entered title is too long, it can only have a maximum of 100 characters");
+    }
+    // year must be 4 digit, no papers before 1980 accepted
+    if ($year < 1980 or $year > 2022) {
+        array_push($errors, "Year must be a 4 digit number between 1980 and 2022");
+    }
     // only logged in users can upload papers, so this variable is always set, still to double check
     if (isset($_SESSION['email'])) {
         $email =  $_SESSION['email'];
     } else {
-        array_push($errors, "Please register/sign in first.");
+        array_push($errors, "Please register/sign in first");
     }
 
+    // get file name from form and check if the name is not in the folder papers yet
     $file_name = $_FILES['pdf_file']['name'];
     $file_tmp = $_FILES['pdf_file']['tmp_name'];
-    move_uploaded_file($file_tmp, "./papers/" . $file_name);
-
-    // make sure that no paper with the same name has been uploaded
-    $paper_check_query = "SELECT * FROM papers WHERE title='$title'";
-    $paper_rows = get_selected_lines($con, $paper_check_query);
-
-    if ($paper_rows) {
-        array_push($errors, "Please choose a different name for the paper.");
-    }
-
-    // make sure that no file with the same name has been uploaded
+    // make sure that no file with the same name has been uploaded to folder or db-table
     $filename_check_query = "SELECT * FROM papers WHERE filename='$file_name'";
     $file_name_rows = get_selected_lines($con, $filename_check_query);
+    if (file_exists("./papers/" . $file_name) or $file_name_rows) {
+        array_push($errors, "Please save the paper under a different filename");
+    }
 
-    if ($file_name_rows) {
-        array_push($errors, "Please choose a different name for the file.");
+    // make sure that no paper with the same title has been uploaded
+    $paper_check_query = "SELECT * FROM papers WHERE title='$title'";
+    $paper_rows = get_selected_lines($con, $paper_check_query);
+    if ($paper_rows) {
+        array_push($errors, "Please choose a different name for the paper");
     }
 
     // if there are no errors add paper to the database
     if (count($errors) == 0) {
+        // add file (under the same name) to the folder "papers"
+        move_uploaded_file($file_tmp, "./papers/" . $file_name);
         // get the full name of the user
         $user_query = "SELECT firstName, surname FROM users WHERE email = '$email'";
         $row = get_selected_lines($con, $user_query);
@@ -147,68 +185,91 @@ if (isset($_POST['upload'])) {
 // Review Paper
 if (isset($_POST['review_paper'])) {
     // get current user
-    $email = $_SESSION['email'];
-    // set rating and comment variables according to his input in the form tag
+    // only logged in users can review paper
+    if (isset($_SESSION['email'])) {
+        $email =  $_SESSION['email'];
+    } else {
+        array_push($errors, "Please register/sign in first");
+    }
+    // set rating and comment variables according to the input in the form tag
+    // no need to check rating, as it can only be chosen, not entered
     $rating = mysqli_real_escape_string($con, $_POST['rating']);
     $comment = mysqli_real_escape_string($con, $_POST['comment']);
-    // get the paper title passed in the form
-    if (isset($_GET['title'])) {
-        $paper_title = $_GET['title'];
+    // length of comment max 200 in db-table
+    if (strlen($comment) > 200) {
+        array_push($errors, "The entered comment is too long, it can only have a maximum of 200 characters");
     }
 
+    // get the paper title passed via link in the form
+    if (isset($_GET['title'])) {
+        $paper_title = mysqli_real_escape_string($con, $_GET['title']);
+    }
     // make sure that this user has not yet commented/reviewed this paper (only one review per person per paper)
     $user_check_query = "SELECT * FROM reviews WHERE email='$email' AND paper_title='$paper_title' LIMIT 1";
     $user_rows = get_selected_lines($con, $user_check_query);
-
     if ($user_rows) {
-        array_push($errors, "You have already reviewed this paper.");
+        array_push($errors, "You have already reviewed this paper");
     }
+
     // add review and comment to the database, if there are no errors in the form
     if (count($errors) == 0) {
         $query = "INSERT INTO reviews(email, rating, comment, paper_title)  VALUES ('$email',
             '$rating', '$comment', '$paper_title')";
         mysqli_query($con, $query);
     }
-    header("Location: ./papers_and_posters.php#publ");
+    header("Location: ./publications.php#publ");
 }
+
 
 // ********** Conference Chair operations ********** 
 
 // Add news to homepage
 if (isset($_POST['add_news'])) {
-    $email = $_SESSION['email'];
+    // check if user is logged in and conference chair (if)
+    if (isset($_SESSION['conference_chair']) and $_SESSION['conference_chair'] == 1) {
+        $email =  $_SESSION['email'];
+    } else {
+        array_push($errors, "Please sign in as conference chair to access this");
+    }
     $news_message = mysqli_real_escape_string($con, $_POST['news']);
-    $query = "INSERT INTO news(email, message) VALUES ('$email',
-    '$news_message')";  
-    mysqli_query($con, $query);
-    header("Location: ../index.php");
-
+    // length of news msg max 100 in db-table
+    if (strlen($news_message) > 100) {
+        array_push($errors, "The entered comment is too long, it can only have a maximum of 100 characters");
+    }
+    if (count($errors) == 0) {
+        $query = "INSERT INTO news(email, message) VALUES ('$email',
+    '$news_message')";
+        mysqli_query($con, $query);
+    }
+    header("Location: ./index.php");
 }
 
 // Remove news
 if (isset($_POST['remove_news'])) {
     if (isset($_GET['msg_id'])) {
-        $news_id = (int) $_GET["msg_id"];  
+        $news_id = (int) $_GET["msg_id"];
         $remove_query = "DELETE FROM news WHERE ID='$news_id'";
         mysqli_query($con, $remove_query);
-        
-    } else {
-        $news_message = $msg_id;    }
-    //header("Location: ../index.php");
+    }
+    header("Location: ./index.php");
 }
 
-// Reommend Changes to paper
+// Reommend changes to paper
 if (isset($_POST['rec_changes'])) {
-    // get current user, user can only activate this POST if he is conference chair user
-    $email = $_SESSION['email'];
-    $cc_check_query = "SELECT conference_chair FROM users WHERE email='$email'";
-    $cc = get_selected_lines($con, $cc_check_query)['conference_chair'];
-    if ($cc == 0) {
-        array_push($errors, "Only conference chair users can recommend changes to a paper");
+    // check if user is logged in and conference chair (if)
+    if (isset($_SESSION['conference_chair']) and $_SESSION['conference_chair'] == 1) {
+        $email =  $_SESSION['email'];
+    } else {
+        array_push($errors, "Please sign in as conference chair to access this");
     }
     // get remark from form
     $remark = mysqli_real_escape_string($con, $_POST['remark']);
-    // get the paper title passed in the form
+    // length of news msg max 200 in db-table
+    if (strlen($remark) > 200) {
+        array_push($errors, "The entered remark is too long, it can only have a maximum of 200 characters");
+    }
+
+    // get the paper title passed via link in the form
     if (isset($_GET['title'])) {
         $paper_title = $_GET['title'];
     }
@@ -218,7 +279,6 @@ if (isset($_POST['rec_changes'])) {
         mysqli_query($con, $query);
     }
     header("Location: ./new_publications.php");
-
 }
 
 // Reject paper
@@ -227,7 +287,7 @@ if (isset($_POST['reject_paper'])) {
     if (isset($_GET['title'])) {
         $paper_title = $_GET['title'];
         // set status to 2 to indicate paper has been rejected
-        $remove_query = "UPDATE papers SET status=2 WHERE title='$title'";
+        $remove_query = "UPDATE papers SET status=2 WHERE title='$paper_title'";
         mysqli_query($con, $remove_query);
     }
 }

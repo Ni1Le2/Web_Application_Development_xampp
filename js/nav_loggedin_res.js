@@ -14,18 +14,18 @@ var navbar_loggedin = `
         <div class="navbar-nav ms-auto py-0 px-0">
             <a href="index.php" class="nav-item nav-link">Home</a>
             <div class="nav-item dropdown">
-                <a href="papers_and_posters.php" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Publications</a>
+                <a href="publications.php" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Publications</a>
                 <div class="dropdown-menu m-0 bg-dark bg-light-radial">
-                    <a href="papers_and_posters.php#topics" class="dropdown-item text-white">Topics</a>
-                    <a href="papers_and_posters.php#publ" class="dropdown-item text-white">Publications</a>
-                    <a href="papers_and_posters.php#author_guidelines" class="dropdown-item text-white">Author Guidelines</a>
-                    <a href="papers_and_posters.php#deadlines" class="dropdown-item text-white">Deadlines</a>
+                    <a href="publications.php#topics" class="dropdown-item text-white">Topics</a>
+                    <a href="publications.php#publ" class="dropdown-item text-white">Publications</a>
+                    <a href="publications.php#author_guidelines" class="dropdown-item text-white">Author Guidelines</a>
+                    <a href="publications.php#deadlines" class="dropdown-item text-white">Deadlines</a>
                     <a href="registration.php" class="dropdown-item text-white">Register</a>
                 </div>
             </div>
             <a href="my_publications.php" class="nav-item nav-link">My Papers</a>
             <a href="contact.php" class="nav-item nav-link">Contact</a>
-            <a href="index.php?logout='1'" class="nav-item nav-link">Log out</a>
+            <a href="php/server.php?logout='1'" class="nav-item nav-link">Log out</a>
         </div>
     </div>
 </nav>`

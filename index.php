@@ -2,11 +2,6 @@
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
-if (isset($_GET['logout'])) {
-    session_destroy();
-    unset($_SESSION['email']);
-    unset($_SESSION['conference_chair']);
-}
 ?>
 <?php include('php/server.php') ?>
 
@@ -15,10 +10,9 @@ if (isset($_GET['logout'])) {
 
 <head>
     <meta charset="utf-8">
-    <title>WEBUILD - Construction Company Website Template Free</title>
+    <title>ICATH'2022 Website - Web Application Development</title>
+    <meta name="author" content="Nico , Onni Kivistoe">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <meta content="Free HTML Templates" name="keywords">
-    <meta content="Free HTML Templates" name="description">
 
     <!-- Favicon -->
     <link href="img/icon.ico" rel="icon">
@@ -39,9 +33,8 @@ if (isset($_GET['logout'])) {
     <!-- Customized Bootstrap Stylesheet -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
 
-    <!-- Template Stylesheet -->
+    <!-- CSS Stylesheet -->
     <link href="css/style.css" rel="stylesheet">
-
 </head>
 
 <body>
@@ -76,7 +69,7 @@ if (isset($_GET['logout'])) {
         <h1 class="display-3 text-uppercase text-white mb-3">Home</h1>
     </div>
     <br>
-<!-- Page Header End -->
+    <!-- Page Header End -->
 
     <!-- Home Start -->
     <div id="news" class="container-fluid">
@@ -102,9 +95,12 @@ if (isset($_GET['logout'])) {
             while ($row = $message_res->fetch_assoc()) {
                 // display news message
                 echo '<div class="small-text-section">' . $row['message'] . '</div>';
-                // form + button to remove this message
-                echo '<form method="post" action="index.php?msg_id=' . $row['ID'] . '"><br>';
-                echo '<button type="submit" class="btn" name="remove_news">Remove</button></form>';
+                // if user is conference chair he can add news
+                if (isset($_SESSION['conference_chair']) and $_SESSION['conference_chair'] == 1) {
+                    // form + button to remove this message
+                    echo '<form method="post" action="index.php?msg_id=' . $row['ID'] . '"><br>';
+                    echo '<button type="submit" class="btn" name="remove_news">Remove</button></form>';
+                }
                 echo '<br>';
             }
         } else {
@@ -117,7 +113,7 @@ if (isset($_GET['logout'])) {
         if (isset($_SESSION['conference_chair'])) {
             // if user is conference chair he can add news
             if ($_SESSION['conference_chair'] == 1) {
-                echo '<form method="post" action="php/server.php">';
+                echo '<form method="post" action="index.php">';
                 echo '<textarea name="news" id="news" placeholder="Write news announcement here..." class="comment-field"></textarea>';
                 echo '<button type="submit" class="btn" name="add_news">Add News</button></form><br><br>';
             }
@@ -139,8 +135,6 @@ if (isset($_GET['logout'])) {
             Keynote speakers for the conference include but are not limited to: Prof. Joong HEE LEE from Jeonbuk National University, Ahmet Can ALTUNIŞIK from Karadeniz Technical University, Amal El Fallah SEGHROUNI, and Rajan Sen from University of South Florida.
         </div><br><br>
         <!-- About End -->
-
-        <h1 class="heading-style text-white">Upcoming events:</h1> <br>
     </div> <br>
     <!-- Home End -->
 
@@ -167,22 +161,9 @@ if (isset($_GET['logout'])) {
     </div>
     <!-- Footer End -->
 
-
-    <!-- Back to Top -->
-    <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
-
-
     <!-- JavaScript Libraries -->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="lib/easing/easing.min.js"></script>
-    <script src="lib/waypoints/waypoints.min.js"></script>
-    <script src="lib/owlcarousel/owl.carousel.min.js"></script>
-    <script src="lib/tempusdominus/js/moment.min.js"></script>
-    <script src="lib/tempusdominus/js/moment-timezone.min.js"></script>
-    <script src="lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
-    <script src="lib/isotope/isotope.pkgd.min.js"></script>
-    <script src="lib/lightbox/js/lightbox.min.js"></script>
 
     <!-- Template Javascript -->
     <script src="js/main.js"></script>

@@ -4,10 +4,9 @@
 
 <head>
    <meta charset="utf-8">
-   <title>WEBUILD - Construction Company Website Template Free</title>
+   <title>ICATH'2022 Website - Web Application Development</title>
+   <meta name="author" content="Nico , Onni Kivistoe">
    <meta content="width=device-width, initial-scale=1.0" name="viewport">
-   <meta content="Free HTML Templates" name="keywords">
-   <meta content="Free HTML Templates" name="description">
 
    <!-- Favicon -->
    <link href="img/icon.ico" rel="icon">
@@ -28,9 +27,8 @@
    <!-- Customized Bootstrap Stylesheet -->
    <link href="css/bootstrap.min.css" rel="stylesheet">
 
-   <!-- Template Stylesheet -->
+   <!-- CSS Stylesheet -->
    <link href="css/style.css" rel="stylesheet">
-
 </head>
 
 <body>
@@ -42,23 +40,23 @@
    </div>
    <!-- Banner End -->
 
-    <!-- Navbar Start -->
-    <div id="navbar" class="container-fluid sticky-top bg-dark bg-light-radial shadow-sm px-5 pe-lg-0">
-    </div>
-    <?php 
-    // if there is a conference chair value assigned to session, a user is logged in
-    if (isset($_SESSION['conference_chair'])) {
-        // check if user is researcher or conference chair and display respective navbar
-        if ($_SESSION['conference_chair'] == 0) {
-        echo '<script src="js/nav_loggedin_res.js"></script>';
-        } else { // display loggedout navbar
-        echo '<script src="js/nav_loggedin_cc.js"></script>';
-        }
-    } else {
-        echo '<script src="js/nav_loggedout.js"></script>';
-    }
-    ?>
-    <!-- Navbar End -->
+   <!-- Navbar Start -->
+   <div id="navbar" class="container-fluid sticky-top bg-dark bg-light-radial shadow-sm px-5 pe-lg-0">
+   </div>
+   <?php
+   // if there is a conference chair value assigned to session, a user is logged in
+   if (isset($_SESSION['conference_chair'])) {
+      // check if user is researcher or conference chair and display respective navbar
+      if ($_SESSION['conference_chair'] == 0) {
+         echo '<script src="js/nav_loggedin_res.js"></script>';
+      } else { // display loggedout navbar
+         echo '<script src="js/nav_loggedin_cc.js"></script>';
+      }
+   } else {
+      echo '<script src="js/nav_loggedout.js"></script>';
+   }
+   ?>
+   <!-- Navbar End -->
 
    <!-- Page Header Start -->
    <div class="container-fluid page-header ">
@@ -70,7 +68,7 @@
       </div>
    </div>
    <br>
-<!-- Page Header End -->
+   <!-- Page Header End -->
 
    <!-- Registration form start -->
    <h1 class="heading-style text-white">Registration:</h1>
@@ -89,7 +87,7 @@
          <input type="radio" id="title" name="title">
          <label for="title">Prof.</label><br>
          <input type="radio" id="title" name="title">
-         <label for="title">Doc..</label><br>
+         <label for="title">Doc.</label><br>
       </p>
       <p>
          <label for="firstName">First Name:</label>
@@ -105,24 +103,52 @@
       </p>
       <p>
          <label>Password</label>
-         <input type="password" name="password_1">
+         <input type="password" name="password_1" required>
       </p>
       <p>
          <label>Confirm password</label>
-         <input type="password" name="password_2">
+         <input type="password" name="password_2" required>
       </p>
       <p>
          <label for="affiliateOrganisation">Affiliate Organisation:</label>
          <input type="text" name="affiliateOrganisation" required>
       </p>
-      <button type="submit" class="btn" name="reg_user">Register</button>
-
       <p>
-  		   <a href="sign_in.php">Already registered? - Sign in here</a>
-  	   </p>
-</form>
-<!-- Registration form end -->
+         <a href="sign_in.php" class="link">Already registered? - Sign in here</a>
+      </p>
+      <button type="submit" class="btn" name="reg_user">Register</button>
+   </form>
+   <!-- Registration form end -->
 
+       <!-- Footer Start -->
+       <div class="footer container-fluid position-relative bg-dark bg-light-radial text-white-50 py-5 px-5">
+        <div class="row g-5">
+            <div class="col-lg-6 pe-lg-5">
+                <a href="index.php" class="navbar-brand">
+                    <h1 class="m-0 display-7 text-uppercase text-white"><img src="img/ICATH_logo.jpg" alt="ITAC_image" width="50" height="50" />ICATH2022</h1>
+                </a>
+                <p> Nico Leng:</p>
+                <p><i class="fa fa-map-marker-alt me-2"></i>13 Jackson Kaujeua Street (Windhoek, Namibia)</p>
+                <p><i class="fa fa-envelope me-2"></i>niconico.leng@googlemail.com</p>
+
+            </div>
+            <div class="col-lg-6 ps-lg-5">
+                <p style="margin:5em;"></p>
+                <p> Onni Kivistoe:</p>
+                <p><i class="fa fa-map-marker-alt me-2"></i>13 Jackson Kaujeua Street (Windhoek, Namibia)</p>
+                <p><i class="fa fa-envelope me-2"></i>onni.kivisto@gmail.com</p>
+
+            </div>
+        </div>
+    </div>
+    <!-- Footer End -->
+    
+   <!-- JavaScript Libraries -->
+   <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+
+   <!-- Template Javascript -->
+   <script src="js/main.js"></script>
 </body>
 
 </html>

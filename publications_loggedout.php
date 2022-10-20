@@ -4,10 +4,9 @@
 
 <head>
     <meta charset="utf-8">
-    <title>WEBUILD - Construction Company Website Template Free</title>
+    <title>ICATH'2022 Website - Web Application Development</title>
+    <meta name="author" content="Nico , Onni Kivistoe">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <meta content="Free HTML Templates" name="keywords">
-    <meta content="Free HTML Templates" name="description">
 
     <!-- Favicon -->
     <link href="img/icon.ico" rel="icon">
@@ -28,9 +27,8 @@
     <!-- Customized Bootstrap Stylesheet -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
 
-    <!-- Template Stylesheet -->
+    <!-- CSS Stylesheet -->
     <link href="css/style.css" rel="stylesheet">
-
 </head>
 
 <body>
@@ -45,14 +43,14 @@
     <!-- Navbar Start -->
     <div id="navbar" class="container-fluid sticky-top bg-dark bg-light-radial shadow-sm px-5 pe-lg-0">
     </div>
-    <?php
+    <?php 
     // if there is a conference chair value assigned to session, a user is logged in
     if (isset($_SESSION['conference_chair'])) {
         // check if user is researcher or conference chair and display respective navbar
         if ($_SESSION['conference_chair'] == 0) {
-            echo '<script src="js/nav_loggedin_res.js"></script>';
+        echo '<script src="js/nav_loggedin_res.js"></script>';
         } else { // display loggedout navbar
-            echo '<script src="js/nav_loggedin_cc.js"></script>';
+        echo '<script src="js/nav_loggedin_cc.js"></script>';
         }
     } else {
         echo '<script src="js/nav_loggedout.js"></script>';
@@ -71,16 +69,17 @@
         </div>
     </div>
     <br>
-    <!-- Page Header End -->
+<!-- Page Header End -->
 
     <!-- Topics Start -->
     <div id="topics" class="container-fluid">
         <h1 class="heading-style text-white">Topics</h1>
         <ul class="list-group">
             <li class="list-group-item"><strong>The topics of the conference are:</strong></li>
-            <li class="list-group-item">Topic 1</li>
-            <li class="list-group-item">Topic 2</li>
-            <li class="list-group-item">Topic 3</li>
+            <li class="list-group-item">Smart and Sustainable Cities</li>
+            <li class="list-group-item">Communication Systems</li>
+            <li class="list-group-item">Renewable and Sustainable Energy</li>
+            <li class="list-group-item">Civil Engineering, Material and Smart Buildings</li>
     </div> <br>
     <!-- Topics End -->
 
@@ -93,8 +92,8 @@
         <?php
         // php code to retrieve all the papers + info from the database
         $servername = "localhost";
-        $username = "nico";
-        $password = "yeah";
+        $username = "root";
+        $password = "";
         $dbname = "websitedb";
 
         // Create connection
@@ -104,52 +103,47 @@
             die("Connection failed: " . $conn->connect_error);
         }
 
+        // select all the papers that have been accepted (status=1)
         $sql = "SELECT * FROM papers WHERE status = 1";
         $result = $conn->query($sql);
-
         if ($result->num_rows > 0) {
             echo '<ul class = "list-group">
             <li class="list-group-item"> <strong>Papers:</strong></li>';
 
-            // output data of each row
+            // go through each row in db-table
             while ($row = $result->fetch_assoc()) {
-                // display paper part
+                // display paper with link to download is
                 echo '<li class="list-group-item paper-style"> <a target="_blank" class="text-dark" href=papers/' . $row["filename"] . '>' . $row["title"] . ' - ' . $row["author"] . ' (' . $row["year"] . ') <i class="bi bi-download"></i></a></li>';
+                // set paper title to that of the current paper (row)
                 $paper_title = $row['title'];
+                // get the average rating of this paper and round it
                 $query = mysqli_query($conn, "SELECT AVG(rating) as AVGRATE FROM reviews WHERE paper_title='$paper_title'");
                 $row = mysqli_fetch_array($query);
                 $AVGRATE = round($row['AVGRATE'], 1);
-                $query = mysqli_query($conn, "SELECT count(rating) as NumberRates from reviews WHERE paper_title='$paper_title'");
+                // get the total amount of ratings of this paper
+                $query = mysqli_query($conn, "SELECT count(rating) as total_ratings from reviews WHERE paper_title='$paper_title'");
                 $row = mysqli_fetch_array($query);
-                $NumberRates = $row['NumberRates'];
-                echo '<li class="list-group-item"> <p> Average rating: ' . $AVGRATE . ' (Total ratings: ' . $NumberRates . ')</p></li>';
-
-                $query = "SELECT * FROM reviews WHERE paper_title='$paper_title'";
-                $query_res = $conn->query($query);
-                if ($query_res->num_rows > 0) {
-                    while ($query_row = $query_res->fetch_assoc()) {
-                            echo '<li class="list-group-item"> <p>Comment by: ' . $query_row['email'] . '</p>';
-                        echo '<textarea class="comment-field" readonly> ' . $query_row['comment'] . '</textarea> </li>';
-                    }
-                } else {
-                    echo '<li class="list-group-item">No comments on this paper yet.</li>';
+                $total_ratings = $row['total_ratings'];
+                // display both average rating and total number of ratings
+                echo '<li class="list-group-item"> <p> Average rating: ' . $AVGRATE . ' (Total ratings: ' . $total_ratings . ')</p></li>';
                 }
-            }
+            
             echo '</ul> <br>';
-        } else {
-            echo "No papers accepted yet.";
-        }
+            } else {
+                echo "No papers have been confirmed yet";
+            }
         $conn->close();
         ?>
-        <h2>Upload Publication</h2>
-        <a href=upload.php class="text-dark"> <i class="bi bi-arrow-right"></i> Click here to upload a publication <i class="bi bi-upload"></i></a>
+
+        <h2>Upload or Review Publication</h2>
+        <a href=sign_in.php class="text-dark"> <i class="bi bi-arrow-right"></i> Sign in to upload or review a paper </i></a>
     </div> <br>
     <!-- Publications End -->
 
     <!-- Author Guidelines Start -->
     <div id="author_guidelines" class="container-fluid">
         <h1 class="heading-style text-white">Author Guidelines</h1>
-        <div class="big-text-section"> This is the Author Guidelines section. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer feugiat diam ex, eu consequat eros dignissim ac. Morbi ac cursus leo. Aliquam erat volutpat. Donec a eleifend ligula. Etiam mollis tempus facilisis. Nullam eu diam dapibus, posuere sem dapibus, elementum orci. Quisque at arcu egestas, ornare nulla a, pharetra ipsum. Vivamus viverra sollicitudin risus et viverra. Donec eget euismod sem, non mollis ipsum. Proin massa leo, blandit posuere elit vitae, tristique tincidunt ex. Nunc semper bibendum enim sit amet ultrices. Quisque tellus tortor, pharetra ut auctor id, tempus quis nulla. Suspendisse nisi odio, dictum id scelerisque suscipit, sollicitudin nec nulla. In maximus nisi sed nulla malesuada, quis tincidunt velit sodales. Sed sodales nibh turpis, malesuada hendrerit eros lobortis ut.</div>
+        <div class="text-section"> This is the Author Guidelines section. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer feugiat diam ex, eu consequat eros dignissim ac. Morbi ac cursus leo. Aliquam erat volutpat. Donec a eleifend ligula. Etiam mollis tempus facilisis. Nullam eu diam dapibus, posuere sem dapibus, elementum orci. Quisque at arcu egestas, ornare nulla a, pharetra ipsum. Vivamus viverra sollicitudin risus et viverra. Donec eget euismod sem, non mollis ipsum. Proin massa leo, blandit posuere elit vitae, tristique tincidunt ex. Nunc semper bibendum enim sit amet ultrices. Quisque tellus tortor, pharetra ut auctor id, tempus quis nulla. Suspendisse nisi odio, dictum id scelerisque suscipit, sollicitudin nec nulla. In maximus nisi sed nulla malesuada, quis tincidunt velit sodales. Sed sodales nibh turpis, malesuada hendrerit eros lobortis ut.</div>
     </div> <br>
     <!-- Author Guidelines End -->
 
@@ -192,14 +186,6 @@
     <!-- JavaScript Libraries -->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="lib/easing/easing.min.js"></script>
-    <script src="lib/waypoints/waypoints.min.js"></script>
-    <script src="lib/owlcarousel/owl.carousel.min.js"></script>
-    <script src="lib/tempusdominus/js/moment.min.js"></script>
-    <script src="lib/tempusdominus/js/moment-timezone.min.js"></script>
-    <script src="lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
-    <script src="lib/isotope/isotope.pkgd.min.js"></script>
-    <script src="lib/lightbox/js/lightbox.min.js"></script>
 
     <!-- Template Javascript -->
     <script src="js/main.js"></script>

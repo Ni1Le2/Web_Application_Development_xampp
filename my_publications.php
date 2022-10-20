@@ -22,10 +22,9 @@ $email = $_SESSION['email'];
 
 <head>
     <meta charset="utf-8">
-    <title>WEBUILD - Construction Company Website Template Free</title>
+    <title>ICATH'2022 Website - Web Application Development</title>
+    <meta name="author" content="Nico , Onni Kivistoe">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <meta content="Free HTML Templates" name="keywords">
-    <meta content="Free HTML Templates" name="description">
 
     <!-- Favicon -->
     <link href="img/icon.ico" rel="icon">
@@ -46,9 +45,8 @@ $email = $_SESSION['email'];
     <!-- Customized Bootstrap Stylesheet -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
 
-    <!-- Template Stylesheet -->
+    <!-- CSS Stylesheet -->
     <link href="css/style.css" rel="stylesheet">
-
 </head>
 
 <body>
@@ -137,6 +135,8 @@ $email = $_SESSION['email'];
                 }
             }
             echo '</ul> <br>';
+        } else {
+            echo '<p>You have not uploaded any papers yet.</p>'; 
         }
         ?>
         <h2>Upload Publication</h2>
@@ -152,8 +152,7 @@ $email = $_SESSION['email'];
         $sql = "SELECT * FROM papers WHERE email!='$email' AND status = 1";
         $result = $conn->query($sql);
         if ($result->num_rows > 0) {
-            echo '<ul class = "list-group">
-            <li class="list-group-item"> <strong>Papers:</strong></li>';
+            echo '<ul class = "list-group">';
             // go through each row found
             while ($row = $result->fetch_assoc()) {
                 $paper_title = $row['title'];
@@ -170,7 +169,7 @@ $email = $_SESSION['email'];
             }
             echo '</ul> <br>';
         } else {
-            echo "No papers accepted yet.";
+            echo "You have not reviewed any papers yet.";
         }
         $conn->close();
         ?>
@@ -203,14 +202,6 @@ $email = $_SESSION['email'];
     <!-- JavaScript Libraries -->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="lib/easing/easing.min.js"></script>
-    <script src="lib/waypoints/waypoints.min.js"></script>
-    <script src="lib/owlcarousel/owl.carousel.min.js"></script>
-    <script src="lib/tempusdominus/js/moment.min.js"></script>
-    <script src="lib/tempusdominus/js/moment-timezone.min.js"></script>
-    <script src="lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
-    <script src="lib/isotope/isotope.pkgd.min.js"></script>
-    <script src="lib/lightbox/js/lightbox.min.js"></script>
 
     <!-- Template Javascript -->
     <script src="js/main.js"></script>

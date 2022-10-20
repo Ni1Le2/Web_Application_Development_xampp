@@ -1,0 +1,58 @@
+Onni Kivistoe (222136472)
+Nico Leng (222136669)
+
+This is a guide to help you go through and understand the website functions and code better.
+
+All operations send/receive data from the database that is provided by xampp. This database uses indizes as well as relational constraints to make sure the data is consistent and integrity is guaranteed.
+
+Login:
+- Website displays different pages/content depending if a user is logged in or not and also depending on which user is logged in
+- Researcher users can be simple registered
+- Conference Chair users are predefined. To access conference chair content/operations, log in as:
+    email: nico.leng@web.de
+    password: password
+- the passwords are md5 encrypted so it is not (easily) possible to retrieve them from the database without knowing them
+- the pages that differ are mainly: 
+    Publications, New Papers (only conference chair), My Papers (only researcher), News (only conferene chair can add/remove news)
+- remark: all users passwords are set to "password" (so I don't have to remember too many different passwords), thats why in the database they all look the same
+
+
+Publications Page:
+- not user logged in:
+    - published and accepted papers are displayed
+    - average and total amount of ratings are displayed
+    - nothing can be updated, if you want to update you need to sign in first (as researcher)
+- researcher:
+    - published and accepted papers are displayed
+    - average and total amount of ratings are displayed
+    - comments made by the logged in users are shown under the respective paper
+    - papers that the user has not reviewed yet can be reviewed
+    - user can upload papers (remark: uploaded papers may not contain spaces due to an error!)
+- conference chair:
+    - published and accepted papers are displayed
+    - average and total amount of ratings are displayed
+    - all comments of all accepted papers are displayed (with author of comment)
+    - can not upload papers (only researchers can)
+
+
+My Papers Page:
+- only logged in researcher can access
+- shows all the papers uploaded by the researcher and their respective status (not accepted yet, accepted, rejected)
+- shows all comments and ratings of made by other researchers on the logged in user's papers
+- shows all recommended changes of the conference chair on the logged in user's papers
+- shows all comments made by the user on other people's papers
+
+
+New Papers Page:
+- only logged in conference chair can access
+- shows all papers that have not been accepted or rejected yet, with all recommended changes (and who made them) as well as all comments and ratings
+- here conference chair can accept or reject papers and can also recommend changes
+
+
+Home:
+- the same for logged out users and researchers: just news (and other content) are displayed 
+- conference chair:
+    - can add news
+    - can remove news
+
+
